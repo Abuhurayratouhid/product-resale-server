@@ -22,6 +22,13 @@ async function run() {
         const booksDB = client.db('booksDB');
         const categoriesCollection = booksDB.collection('categoriesCollection');
         const booksCollection = booksDB.collection('booksCollection');
+        const ordersCollection = booksDB.collection('ordersCollection');
+
+        app.post('/orders',async(req, res)=>{
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order)
+            res.send(result);
+        })
 
         app.get('/categoryBooks/:id',async(req, res)=>{
             const id = req.params.id;
@@ -31,96 +38,11 @@ async function run() {
         })
 
 
-        app.post('/books', async(req, res)=>{
-            const docs = [
-                {
-                  "originalPrice": "$789",
-                  "resalePrice": "$335",
-                  "rating": 4,
-                  "categoryId": "637fab7fba4156c5fcd4ddcd",
-                  "picture": "http://placehold.it/32x32",
-                  "useOnly": 18,
-                  "name": "Tanya ",
-                  "sellerName": "Tom",
-                  "categoryName": "Horror",
-                  "details": "Lynne ",
-                  "location": "Dhaka",
-                  "postedDate": 19
-                },
-                {
-                  "originalPrice": "$489",
-                  "resalePrice": "$379",
-                  "rating": 5,
-                  "categoryId": "637fab7fba4156c5fcd4ddcd",
-                  "picture": "http://placehold.it/32x32",
-                  "useOnly": 23,
-                  "name": "Galloway ",
-                  "sellerName": "john",
-                  "categoryName": "Horror",
-                  "details": "Rebecca ",
-                  "location": "Mirpur",
-                  "postedDate": 12
-                },
-                {
-                  "originalPrice": "$328",
-                  "resalePrice": "$260",
-                  "rating": 4,
-                  "categoryId": "637fab7fba4156c5fcd4ddcb",
-                  "picture": "http://placehold.it/32x32",
-                  "useOnly": 25,
-                  "name": "Marcie ",
-                  "sellerName": "jack",
-                  "categoryName": "Action and adventure",
-                  "details": "Nichole ",
-                  "location": "khulna",
-                  "postedDate": 15
-                },
-                {
-                  "originalPrice": "$673",
-                  "resalePrice": "$480",
-                  "rating": 5,
-                  "categoryId":"637fab7fba4156c5fcd4ddcb",
-                  "picture": "http://placehold.it/32x32",
-                  "useOnly": 24,
-                  "name": "Elsie ",
-                  "sellerName": "junaid",
-                  "categoryName": "Action and adventure",
-                  "details": "Marie ",
-                  "location": "Borishal",
-                  "postedDate": 16
-                },
-                {
-                  "originalPrice": "$936",
-                  "resalePrice": "$768",
-                  "rating": 5,
-                  "categoryId": "637fab7fba4156c5fcd4ddcc",
-                  "picture": "http://placehold.it/32x32",
-                  "useOnly": 19,
-                  "name": "Wilkinson ",
-                  "sellerName": "jems",
-                  "categoryName": "Historical fiction",
-                  "details": "Shelly ",
-                  "location": "Nilkhet",
-                  "postedDate": 10
-                },
-                {
-                  "originalPrice": "$379",
-                  "resalePrice": "$214",
-                  "rating": 4,
-                  "categoryId": "637fab7fba4156c5fcd4ddcc",
-                  "picture": "http://placehold.it/32x32",
-                  "useOnly": 23,
-                  "name": "Arline ",
-                  "sellerName": "Niloy",
-                  "categoryName": "Historical fiction",
-                  "details": "Solis ",
-                  "location": "Manikganj",
-                  "postedDate": 14
-                }
-              ]
-            const result = await booksCollection.insertMany(docs)
-            res.send(result)
-        })
+        // app.post('/books', async(req, res)=>{
+        //     const docs = [];
+        //     const result = await booksCollection.insertMany(docs)
+        //     res.send(result)
+        // })
 
         app.get('/categories', async(req, res)=>{
             const query = {};
