@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 const jwt = require('jsonwebtoken');
@@ -58,6 +58,25 @@ async function run() {
             const query = {account: 'Buyer'};
             const result = await usersCollection.find(query).toArray();
             res.send(result)
+        })
+
+        // delete a buyer
+        app.delete('/buyer/:id',async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await usersCollection.deleteOne(query);
+            res.send(result)
+            // console.log(id)
+
+        })
+        // delete a seller
+        app.delete('/seller/:id',async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await usersCollection.deleteOne(query);
+            res.send(result)
+            // console.log(id)
+
         })
 
         // get all users from DB 
