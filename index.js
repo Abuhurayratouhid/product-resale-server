@@ -47,6 +47,12 @@ async function run() {
             res.status(403).send({accessToken: ''})
             // console.log(user)
         })
+        // get only sellers 
+        app.get('/sellers', async(req, res)=>{
+            const query = {account: 'Seller'};
+            const result = await usersCollection.find(query).toArray();
+            res.send(result)
+        })
 
         // get all users from DB 
         app.get('/users', async(req, res)=>{
