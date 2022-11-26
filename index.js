@@ -17,6 +17,16 @@ app.use(express.json())
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.rz3ftkv.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri); 
 // console.log(uri)
+
+
+// verify JWT 
+function verifyJWT(req, res, next){
+    const authHeader = req.headers.authorization;
+    if(!authHeader){
+        return res.status(401).send({message: 'unAuthorized access'})
+    }
+    const token = authHeader.split(' ')[1];
+}
 async function run() {
     try {
         const booksDB = client.db('booksDB');
@@ -24,6 +34,19 @@ async function run() {
         const booksCollection = booksDB.collection('booksCollection');
         const ordersCollection = booksDB.collection('ordersCollection');
         const usersCollection = booksDB.collection('usersCollection');
+
+        // JWT  
+        app.get('/jwt',async(req, res)=>{
+            const email = req.query.email;
+            const query = {email: email};
+            const user = await usersCollection.findOne(query)
+            if(user){
+                const token = jwt.sign({email},process.env.ACCESS_TOKEN,{expiresIn:'1d'})
+                return res.send({accessToken: token})
+            }
+            res.status(403).send({accessToken: ''})
+            // console.log(user)
+        })
 
         // save user in DB 
         app.post('/users', async(req, res)=>{
