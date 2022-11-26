@@ -79,7 +79,7 @@ async function run() {
 
         })
 
-        // update user role 
+        // Make admin 
         app.put('/user/:id',async(req,res)=>{
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
@@ -92,6 +92,14 @@ async function run() {
             const result = await usersCollection.updateOne(query,doc,options);
             res.send(result)
 
+        })
+
+        // check admin 
+        app.get('/user/admin/:email',async(req, res)=>{
+            const email = req.params.email;
+            const query = {email}
+            const user = await usersCollection.findOne(query);
+            res.send({isAdmin: user?.role === 'admin'});
         })
 
         // get all users from DB 
