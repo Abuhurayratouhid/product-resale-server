@@ -53,6 +53,12 @@ async function run() {
             const result = await usersCollection.find(query).toArray();
             res.send(result)
         })
+        // get only Buyers 
+        app.get('/buyers', async(req, res)=>{
+            const query = {account: 'Buyer'};
+            const result = await usersCollection.find(query).toArray();
+            res.send(result)
+        })
 
         // get all users from DB 
         app.get('/users', async(req, res)=>{
