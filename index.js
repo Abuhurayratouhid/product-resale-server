@@ -48,6 +48,13 @@ async function run() {
             // console.log(user)
         })
 
+        // get all users from DB 
+        app.get('/users', async(req, res)=>{
+            const query = {}
+            const result = await usersCollection.find(query).toArray();
+            res.send(result)
+        })
+
         // save user in DB 
         app.post('/users', async(req, res)=>{
             const user = req.body;
