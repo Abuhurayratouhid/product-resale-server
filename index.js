@@ -79,6 +79,21 @@ async function run() {
 
         })
 
+        // update user role 
+        app.put('/user/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const options = {upsert: true}
+            const doc = {
+                $set:{
+                    role: 'admin'
+                }
+            }
+            const result = await usersCollection.updateOne(query,doc,options);
+            res.send(result)
+
+        })
+
         // get all users from DB 
         app.get('/users', async(req, res)=>{
             const query = {}
