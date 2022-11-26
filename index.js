@@ -23,6 +23,14 @@ async function run() {
         const categoriesCollection = booksDB.collection('categoriesCollection');
         const booksCollection = booksDB.collection('booksCollection');
         const ordersCollection = booksDB.collection('ordersCollection');
+        const usersCollection = booksDB.collection('usersCollection');
+
+        // save user in DB 
+        app.post('/users', async(req, res)=>{
+            const user = req.body;
+            const result = await usersCollection.insertOne(user)
+            console.log(result)
+        })
 
         app.post('/orders',async(req, res)=>{
             const order = req.body;
