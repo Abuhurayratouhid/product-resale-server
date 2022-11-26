@@ -66,6 +66,12 @@ async function run() {
             const result = await usersCollection.find(query).toArray();
             res.send(result)
         })
+        // get all Orders from DB 
+        app.get('/orders', async(req, res)=>{
+            const query = {}
+            const result = await ordersCollection.find(query).toArray();
+            res.send(result)
+        })
 
         // save user in DB 
         app.post('/users', async(req, res)=>{
