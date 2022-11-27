@@ -34,6 +34,7 @@ async function run() {
         const booksCollection = booksDB.collection('booksCollection');
         const ordersCollection = booksDB.collection('ordersCollection');
         const usersCollection = booksDB.collection('usersCollection');
+        const addedProductCollection = booksDB.collection('addedProductCollection');
 
         // JWT  
         app.get('/jwt',async(req, res)=>{
@@ -47,6 +48,20 @@ async function run() {
             res.status(403).send({accessToken: ''})
             // console.log(user)
         })
+        // insert add product to DB 
+        app.post('/addProduct',async(req, res)=>{
+            const product = req.body;
+            const result = await addedProductCollection.insertOne(product)
+            res.send(result)
+        })
+        // get added product by seller email
+        app.get('/addProduct',async(req, res)=>{
+            const email = req.query.email;
+            const query = {sellerEmail: email};
+            const result = await addedProductCollection.find(query).toArray();
+            res.send(result)
+        }) 
+
         // get only sellers 
         app.get('/sellers', async(req, res)=>{
             const query = {account: 'Seller'};
