@@ -186,6 +186,15 @@ async function run() {
             res.send(result);
         })
 
+        // get order by user email
+        app.get('/orders/:email',async(req, res)=>{
+            const email = req.params.email;
+            const query = {userEmail: email};
+            const result = await ordersCollection.find(query).toArray();
+            res.send(result)
+            // console.log(email)
+        })
+
         app.get('/categoryBooks/:id',async(req, res)=>{
             const id = req.params.id;
             const filter = {categoryId: id}
