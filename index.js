@@ -101,6 +101,13 @@ async function run() {
             const user = await usersCollection.findOne(query);
             res.send({isAdmin: user?.role === 'admin'});
         })
+        // check buyer 
+        app.get('/user/buyer/:email',async(req, res)=>{
+            const email = req.params.email;
+            const query = {email}
+            const user = await usersCollection.findOne(query);
+            res.send({isBuyer: user?.account === 'Buyer'});
+        })
 
         // get all users from DB 
         app.get('/users', async(req, res)=>{
