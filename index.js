@@ -35,6 +35,7 @@ async function run() {
         const ordersCollection = booksDB.collection('ordersCollection');
         const usersCollection = booksDB.collection('usersCollection');
         const addedProductCollection = booksDB.collection('addedProductCollection');
+        const advertiseCollection = booksDB.collection('advertiseCollection');
 
         // JWT  
         app.get('/jwt',async(req, res)=>{
@@ -47,6 +48,26 @@ async function run() {
             }
             res.status(403).send({accessToken: ''})
             // console.log(user)
+        })
+        // insert a product to Advertise collection
+        app.post('/advertise',async(req, res)=>{
+            const product = req.body;
+            const result = await advertiseCollection.insertOne(product)
+            res.send(result)
+        })
+        // get All advertise from DB 
+        app.get('/advertise',async(req, res)=>{
+            const query = {};
+            const result = await advertiseCollection.find(query).toArray();
+            res.send(result)
+        })
+
+        // delete advertise item after booking 
+        app.delete('/advertise/:id',async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await advertiseCollection.deleteOne(query);
+            res.send(result)
         })
         // insert add product to DB 
         app.post('/addProduct',async(req, res)=>{
@@ -61,6 +82,14 @@ async function run() {
             const result = await addedProductCollection.find(query).toArray();
             res.send(result)
         }) 
+        
+        //delete a added product by id 
+        app.delete('/addProduct/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await addedProductCollection.deleteOne(query);
+            res.send(result)
+        })
 
         // get only sellers 
         app.get('/sellers', async(req, res)=>{
