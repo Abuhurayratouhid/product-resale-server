@@ -137,6 +137,20 @@ async function run() {
             res.send(result)
 
         })
+        // verify seller 
+        app.put('/user/verify/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const options = {upsert: true}
+            const doc = {
+                $set:{
+                    status: 'verify'
+                }
+            }
+            const result = await usersCollection.updateOne(query,doc,options);
+            res.send(result)
+
+        })
 
         // check admin 
         app.get('/user/admin/:email',async(req, res)=>{
